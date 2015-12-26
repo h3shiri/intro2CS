@@ -1,0 +1,36 @@
+h3shiri
+206098311
+Shiri Heffetz
+
+=================================
+= README for ex9 Spaceship-game =
+=================================
+
+==================
+=  Description:  =
+==================
+We have created few files: one for each class and one for the game-driver.
+Implementing various functions in the classes and the game logic accordingly.
+Each function parameters and return values is specified in the doc-strings.
+
+=============================
+=  List of submitted files: =
+=============================
+
+README - this file
+ship.py - contains all the functions and documentation regarding the Ship Class.
+asteroid.py - contains all the functions and documentation regarding the Asteroid Class.
+torpedo.py - contains all the functions and documentation regarding the Torpedo Class.
+asteroids_main.py - the main driver of the game, contains the game loop, magic numbers and cross Class functions.
+AUTHORS - the Authors of this exercise.
+======================
+=  Special Comments  =
+======================
+design decisions:
+1) We have chosen to place most of the magic numbers in the game driver.
+Therefore, its easy to manage the game parameter by a fellow programmer.
+One could place the magic numbers wherever he desires, depends on his eternal implementation.
+2) Our cross classes functions are defined in the main-driver, due to simplicity of code.
+In opposing to defining a cross classes function internally (possible because we know all the classes priorly).
+3) Our end of game messages are humorous in order to encourage the player through his endeavours.
+One could also use a very serious format in it’s messages to create a different atmosphere. 

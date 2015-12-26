@@ -1,0 +1,28 @@
+h3shiri
+206098311
+Shiri Heffetz
+
+=================================
+= README for ex6 Submarine-game =
+=================================
+
+==================
+=  Description:  =
+==================
+We have created 2 files one for the game and one for the Ship Class.
+Implementing various functions, and the game,Ship class were designed by contract.
+Each function parameters and return values is specified in the doc-string.
+
+=============================
+=  List of submitted files: =
+=============================
+
+README - this file
+ship.py - contains all the functions and documentation regarding the Ship Class.
+game.py - implementing the submarine game using various functions from the Ship Class.
+
+======================
+=  Special Comments  =
+======================
+
+I added extra comments inside the functions to make the code more readable at times.

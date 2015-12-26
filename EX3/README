@@ -1,0 +1,29 @@
+h3shiri
+206098311
+Shiri Heffetz
+
+=============================
+=  README for ex3           =
+=============================
+
+
+==================
+=  Description:  =
+==================
+
+Using for and while loops to preform various tasks..
+factoring primes, matching equal pairs in a list of ints, cartesian multiplication and a selection of interesting tasks.
+
+=============================
+=  List of submitted files: =
+=============================
+
+README - this file
+ex3.py - contains all the function and documentation regarding the functions implementation.
+
+
+
+======================
+=  Special Comments  =
+======================
+

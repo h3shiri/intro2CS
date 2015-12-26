@@ -1,0 +1,33 @@
+h3shiri
+206098311
+Shiri Heffetz
+
+=============================
+=  README for ex4           =
+=============================
+
+
+==================
+=  Description:  =
+==================
+
+An implementation of a hangman game using some images and a python programme.
+we also have a hint function to assist the user, and in the end of each game the user has the option of playing again
+The programme asks the user for input in each iteration in order to determine the next display.
+
+=============================
+=  List of submitted files: =
+=============================
+
+README - this file
+ex4.py - contains all the function and documentation regarding the functions implementation.
+The user interface and rules of the hangman game are a given knowledge of the user.
+we imported few images and a gui file in order to make the UI/UX smooth (all given in the exercise) 
+
+
+
+======================
+=  Special Comments  =
+======================
+
+I added extra comments inside the functions to make the code more readable at times.
