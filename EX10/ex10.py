@@ -1,3 +1,4 @@
+#TODO: add proper decomuentation to all the functions..etc
 import copy
 # reading the links from a given file.
 def read_article_links(file_name):
@@ -17,7 +18,6 @@ class Article:
     """docstring for Article"""
     def __init__(self, name):
         self.__name = name
-        #figured out this collections
         self.collection = []
 
     # Retrurn the name of the article
@@ -110,11 +110,44 @@ class WikiNetwork:
         sortedByTitle = sorted(ranks.items(), key=lambda a: a[0])
         sortedByRank = sorted(sortedByTitle, key=lambda a: a[1], reverse=True)
 
-        # print(sortedByRank)
-
         return [ titleAndRankTuple[0] for titleAndRankTuple in sortedByRank ]
 
-#TODO: remove tests later on
+    # TODO: test this function.
+    def jaccard_index(self, article_name):
+        jaccard_dictionary = {}
+        # return None in case of no neighboors or non-existing title
+        if article_name not in self.__network.keys():
+            return None
+        elif len(self.__network[article_name].get_neighbors()) == 0:
+            return None
+
+        # Define one group (list of articles) as the set of outgoing neighboors from article_name
+        setArticlesB = self.__network[article_name].get_neighbors()
+        # const set of articles names
+        setB ={article.get_name() for article in setArticlesB}
+        # Calculate jaccard_index one by one
+        for articleA in self.__network.keys():
+            setArticlesA = self.__network[articleA].get_neighbors()
+            # in case of an article with no neighboors set index as zero
+            if len(setArticlesA) == 0:
+                jaccard_dictionary[articleA] = 0
+                continue
+            setA = {article.get_name() for article in setArticlesA}
+            index = len(setA & setB)/len(setB.union(setA))
+            jaccard_dictionary[articleA] = index
+
+        sortedByTitle = sorted(jaccard_dictionary.items(), key=lambda a: a[0])
+        sortedByJaccIndex = sorted(sortedByTitle, key=lambda a: a[1], reverse=True)
+
+        return [ articleAndIndexTuple[0] for articleAndIndexTuple in sortedByJaccIndex ]
+
+# TODO: remove tests later on ,this one refrers to the silly links..
+'''
 network = WikiNetwork(read_article_links('links.txt'));
 print('Hello!')
 print(network.page_rank(3))
+'''
+'''
+network = WikiNetwork(read_article_links('links.txt'));
+print(network.jaccard_index('moses moshik'))
+'''
