@@ -12,3 +12,4 @@ def read_article_links(file_name):
         edge = (node1, node2)
         res.append(edge)
     return res
+    
