@@ -1,0 +1,13 @@
+omer yossi	omer yudit	omer moshe	omer razion	omer ohav	omer hitler	omer moses	omer rabanu	omer gisanu	omer slumik	omer moshik	omer moses	
+yossi omer	yossi yudit	yossi moshe	yossi razion	yossi ohav	yossi hitler	yossi moses	yossi rabanu	yossi gisanu	yossi slumik	yossi moshik	yossi moses	
+yudit omer	yudit yossi	yudit moshe	yudit razion	yudit ohav	yudit hitler	yudit moses	yudit rabanu	yudit gisanu	yudit slumik	yudit moshik	yudit moses	
+moshe omer	moshe yossi	moshe yudit	moshe razion	moshe ohav	moshe hitler	moshe moses	moshe rabanu	moshe gisanu	moshe slumik	moshe moshik	moshe moses	
+razion omer	razion yossi	razion yudit	razion moshe	razion ohav	razion hitler	razion moses	razion rabanu	razion gisanu	razion slumik	razion moshik	razion moses	
+ohav omer	ohav yossi	ohav yudit	ohav moshe	ohav razion	ohav hitler	ohav moses	ohav rabanu	ohav gisanu	ohav slumik	ohav moshik	ohav moses	
+hitler omer	hitler yossi	hitler yudit	hitler moshe	hitler razion	hitler ohav	hitler moses	hitler rabanu	hitler gisanu	hitler slumik	hitler moshik	hitler moses	
+moses omer	moses yossi	moses yudit	moses moshe	moses razion	moses ohav	moses hitler	moses rabanu	moses gisanu	moses slumik	moses moshik	moses moses	
+rabanu omer	rabanu yossi	rabanu yudit	rabanu moshe	rabanu razion	rabanu ohav	rabanu hitler	rabanu moses	rabanu gisanu	rabanu slumik	rabanu moshik	rabanu moses	
+gisanu omer	gisanu yossi	gisanu yudit	gisanu moshe	gisanu razion	gisanu ohav	gisanu hitler	gisanu moses	gisanu rabanu	gisanu slumik	gisanu moshik	gisanu moses	
+slumik omer	slumik yossi	slumik yudit	slumik moshe	slumik razion	slumik ohav	slumik hitler	slumik moses	slumik rabanu	slumik gisanu	slumik moshik	slumik moses	
+moshik omer	moshik yossi	moshik yudit	moshik moshe	moshik razion	moshik ohav	moshik hitler	moshik moses	moshik rabanu	moshik gisanu	moshik slumik	moshik moses	
+moses omer	moses yossi	moses yudit	moses moshe	moses razion	moses ohav	moses hitler	moses moses	moses rabanu	moses gisanu	moses slumik	moses moshik	
