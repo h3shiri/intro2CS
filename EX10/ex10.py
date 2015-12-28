@@ -1,5 +1,6 @@
 #TODO: add proper decomuentation to all the functions..etc
 import copy
+
 # reading the links from a given file.
 def read_article_links(file_name):
     res = []
@@ -8,16 +9,14 @@ def read_article_links(file_name):
     newText = [item.strip('\n') for item in text]
     multilinks = [item.split('\t') for item in newText]
     workingText = copy.deepcopy(multilinks)
+    # Remove all the empty list items and garbage
+    for item in copy.deepcopy(workingText):
+        if len(item) <= 1:
+            workingText.remove(item)
     while len(workingText) >= 1:
-        line = workingText.pop()
-        #removing garbage end of line
-        line.pop()
-        while len(line) >= 1:
-
-            chainText = line.pop()
-            link = chainText.split(" ")
-            edge = (link[0],link[1])
-            res.append(edge)
+        link = workingText.pop(0)
+        edge = (link[0],link[1])
+        res.append(edge)
     return res
 
 class Article:
@@ -79,8 +78,8 @@ class WikiNetwork:
     def __contains__(self, article_name):
         return (article_name in self.get_titles())
 
-    def __len__(self, article_name):
-        return self.__network.len()
+    def __len__(self):
+        return len(self.__network.keys())
 
     def __repr__(self):
         return str(self.__network)
@@ -90,6 +89,7 @@ class WikiNetwork:
             raise KeyError(article_name)
         return self.__network[article_name]
 
+    #TODO: check why it fails on so many tests
     def page_rank(self, iters, d=0.9):
         # We create a dictionary that contains, for each title, it's page rank number
         ranks = dict()
@@ -148,6 +148,7 @@ class WikiNetwork:
 
         return [ articleTitleAndIndexTuple[0] for articleTitleAndIndexTuple in sortedByJaccIndex ]
 
+    #TODO: check maybe to re-write iterator in order fix StopIterator exception..
     def travel_path_iterator(self, article_name):
         if article_name not in self.get_titles():
             return iter([])
@@ -168,10 +169,11 @@ class WikiNetwork:
         current_neighbors = self.__network[article_name].get_neighbors()
         # As long as we have outgoing neigbors continue to traverse
         while len(current_neighbors) != 0:
+            degree_N_index_copy = copy.deepcopy(incoming_N_dict_index)
             current_neighbors_dict = {}
             for neighbor in current_neighbors:
                 neighborTitle = neighbor.get_name()
-                current_neighbors_dict[neighborTitle] = incoming_N_dict_index[neighborTitle]
+                current_neighbors_dict[neighborTitle] = degree_N_index_copy[neighborTitle]
             # Sort according to index and secondly by title
             sortedByTitle = sorted(current_neighbors_dict.items(), key=lambda a: a[0])
             sortedByNeighborsIndex = sorted(sortedByTitle, key=lambda a: a[1], reverse=True)
@@ -185,6 +187,13 @@ class WikiNetwork:
         res = iter(res_list)
         return res
 
+    def friends_by_depth(self, article_name, depth):
+        pass
+
+
+
+
+
 # TODO: remove tests later on ,this one refrers to the silly links..
 '''
 network = WikiNetwork(read_article_links('links.txt'));
@@ -195,12 +204,6 @@ print(network.page_rank(3))
 network = WikiNetwork(read_article_links('links2.txt'));
 print(network.jaccard_index('Beer')[1])
 '''
-
-network = WikiNetwork(read_article_links('links.txt'));
-iterator = network.travel_path_iterator('gisanu')
-for i in range(3):
-    print(iterator.next())
-
 
 '''
 print("processed network")
