@@ -4,14 +4,20 @@ import copy
 def read_article_links(file_name):
     res = []
     file = open(file_name, 'r')
-    text = file.read()
-    links = text.split('\t')
-    # appending all the links one by one
-    while len(links) >= 2:
-        node1 = links.pop(0)
-        node2 = links.pop(0)
-        edge = (node1, node2)
-        res.append(edge)
+    text = file.readlines()
+    newText = [item.strip('\n') for item in text]
+    multilinks = [item.split('\t') for item in newText]
+    workingText = copy.deepcopy(multilinks)
+    while len(workingText) >= 1:
+        line = workingText.pop()
+        #removing garbage end of line
+        line.pop()
+        while len(line) >= 1:
+
+            chainText = line.pop()
+            link = chainText.split(" ")
+            edge = (link[0],link[1])
+            res.append(edge)
     return res
 
 class Article:
@@ -28,14 +34,15 @@ class Article:
         self.collection.append(neighbor)
     # Return the collection list (neighbors)
     def get_neighbors(self):
-        res = copy.deepcopy(self.collection)
+        #TODO: consider returning a copy
+        res = self.collection
         return res
     # Represent an Article format
     def __repr__(self):
         r1 = self.get_name()
-        r2 = self.get_neighbors()
-        res = str(r1, r2)
-        print(res)
+        neighbors = self.get_neighbors()
+        neighbors_names = [neighbor.get_name() for neighbor in neighbors]
+        return str((r1, neighbors_names))
     # Return the number of neighbors
     def __len__(self):
         res = len(self.get_neighbors())
@@ -139,7 +146,44 @@ class WikiNetwork:
         sortedByTitle = sorted(jaccard_dictionary.items(), key=lambda a: a[0])
         sortedByJaccIndex = sorted(sortedByTitle, key=lambda a: a[1], reverse=True)
 
-        return [ articleAndIndexTuple[0] for articleAndIndexTuple in sortedByJaccIndex ]
+        return [ articleTitleAndIndexTuple[0] for articleTitleAndIndexTuple in sortedByJaccIndex ]
+
+    def travel_path_iterator(self, article_name):
+        if article_name not in self.get_titles():
+            return iter([])
+        # Pre calculate the incoming neighbors index for all the articles
+        incoming_N_dict_index = {}
+        for articleA in self.get_articles():
+            # set initial counter
+            titleA = articleA.get_name()
+            incoming_N_dict_index[titleA] = 0
+            for articleB in self.get_articles():
+                if articleA in articleB.get_neighbors():
+                    incoming_N_dict_index[titleA] += 1
+
+        # Initialise the list of names by the traverse order
+        res_list = []
+        if incoming_N_dict_index[article_name] != 0:
+            res_list.append(article_name)
+        current_neighbors = self.__network[article_name].get_neighbors()
+        # As long as we have outgoing neigbors continue to traverse
+        while len(current_neighbors) != 0:
+            current_neighbors_dict = {}
+            for neighbor in current_neighbors:
+                neighborTitle = neighbor.get_name()
+                current_neighbors_dict[neighborTitle] = incoming_N_dict_index[neighborTitle]
+            # Sort according to index and secondly by title
+            sortedByTitle = sorted(current_neighbors_dict.items(), key=lambda a: a[0])
+            sortedByNeighborsIndex = sorted(sortedByTitle, key=lambda a: a[1], reverse=True)
+            nextNode = sortedByNeighborsIndex[0][0]
+            # In case we made a full circut finish calculating the next node.
+            if nextNode in res_list:
+                break
+            res_list.append(nextNode)
+            current_neighbors = self.__network[nextNode].get_neighbors()
+            #TODO: create fitting iterator that return appropriate stop iteration.
+        res = iter(res_list)
+        return res
 
 # TODO: remove tests later on ,this one refrers to the silly links..
 '''
@@ -148,6 +192,20 @@ print('Hello!')
 print(network.page_rank(3))
 '''
 '''
+network = WikiNetwork(read_article_links('links2.txt'));
+print(network.jaccard_index('Beer')[1])
+'''
+
 network = WikiNetwork(read_article_links('links.txt'));
-print(network.jaccard_index('moses moshik'))
+iterator = network.travel_path_iterator('gisanu')
+for i in range(3):
+    print(iterator.next())
+
+
+'''
+print("processed network")
+iterator = network.travel_path_iterator('Hitler')
+i=0
+for i in range(2):
+    print(iterator.next())
 '''
