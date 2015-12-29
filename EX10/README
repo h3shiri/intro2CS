@@ -1,0 +1,24 @@
+h3shiri
+206098311
+Shiri Heffetz
+
+====================================
+= README for ex10 articles-network =
+====================================
+
+==================
+=  Description:  =
+==================
+We have created a network of articles imulating wikipedia.
+In addition, we implemented few algorithms - among them the page rank and jaccard index.
+On top of that, a selection of function required by the excercise.
+=============================
+=  List of submitted files: =
+=============================
+
+README - this file.
+ex10.py - contains all the classes and functions implementation.
+======================
+=  Special Comments  =
+======================
+Extra comments are inside the function in order to make to code readability better to the naked eye.
