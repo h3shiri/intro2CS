@@ -112,13 +112,15 @@ class WikiNetwork:
             # Create the new ranks dictionary. We want this to be separate so that by changing the ranks
             # we don't affect the old values.
             newRanks = dict()
+            # residude from all the article is always 1-d
             for title in self.get_titles():
                 newRanks[title] = 1 - d
 
             # Update the page ranks
             for title in ranks.keys():
-                for neighbor in self.__network[title].get_neighbors():
-                    newRanks[neighbor.get_name()] += ranks[title]/len(self.__network[title].get_neighbors())
+                neighbors = self.__network[title].get_neighbors()
+                for neighbor in neighbors:
+                    newRanks[neighbor.get_name()] += (d * (ranks[title]/len(neighbors)))
 
             ranks = copy.deepcopy(newRanks)
 
@@ -127,6 +129,7 @@ class WikiNetwork:
 
         return [ titleAndRankTuple[0] for titleAndRankTuple in sortedByRank ]
 
+    # Soring the the articles by Jaccard index and secondly by lexicography.
     def jaccard_index(self, article_name):
         jaccard_dictionary = {}
         # return None in case of no neighboors or non-existing title
@@ -186,11 +189,6 @@ class WikiNetwork:
             sortedByTitle = sorted(current_neighbors_dict.items(), key=lambda a: a[0])
             sortedByNeighborsIndex = sorted(sortedByTitle, key=lambda a: a[1], reverse=True)
             nextNode = sortedByNeighborsIndex[0][0]
-            # In case we made a full circut finish calculating the next node.
-            #TODO: Remove if code worls with yield
-                # if nextNode in res_list:
-                #     break
-                # res_list.append(nextNode)
             current_neighbors = self.__network[nextNode].get_neighbors()
             yield nextNode
         
