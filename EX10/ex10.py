@@ -116,9 +116,9 @@ class WikiNetwork:
                 newRanks[title] = 1 - d
 
             # Update the page ranks
-            for title, rank in ranks.items():
-                for neighbor in self[title].get_neighbors():
-                    newRanks[neighbor.get_name()] += ranks[title]/len(self[title].get_neighbors())
+            for title in ranks.keys():
+                for neighbor in self.__network[title].get_neighbors():
+                    newRanks[neighbor.get_name()] += ranks[title]/len(self.__network[title].get_neighbors())
 
             ranks = copy.deepcopy(newRanks)
 
@@ -127,7 +127,6 @@ class WikiNetwork:
 
         return [ titleAndRankTuple[0] for titleAndRankTuple in sortedByRank ]
 
-    # TODO: test this function.
     def jaccard_index(self, article_name):
         jaccard_dictionary = {}
         # return None in case of no neighboors or non-existing title
