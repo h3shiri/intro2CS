@@ -76,10 +76,12 @@ class WikiNetwork:
                 self.__network[source].add_neighbor(self.__network[target])
 
     def get_articles(self):
-        return self.__network.values()
+        res = [article for article in self.__network.values()]
+        return res
 
     def get_titles(self):
-        return self.__network.keys()
+        res = [str(title) for title in self.__network.keys()]
+        return res
 
     def __contains__(self, article_name):
         return (article_name in self.get_titles())
