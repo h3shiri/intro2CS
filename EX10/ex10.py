@@ -192,13 +192,45 @@ class WikiNetwork:
             current_neighbors = self.__network[nextNode].get_neighbors()
             yield nextNode
         
+    # Assisting function returnning a community set of neighboors given a list of articles
+    def community_neighboors(self, lst_of_articles = []):
+        if len(lst_of_articles) == 0:
+            empty_set = set()
+            return empty_set
+        res_set = set()
+        for article in lst_of_articles:
+            neighbors = article.get_neighbors()
+            names = {neighbor.get_name() for neighbor in neighbors}
+            res_set = res_set.union(names)
+        return copy.deepcopy(res_set)
 
     def friends_by_depth(self, article_name, depth):
-        pass
+        res_set = set()
+        # friend by distance zero
+        res_set.add(article_name)
+        # In case depth is zero return list containning only the article_name
+        if article_name not in self.get_titles():
+            return None
+        if depth == 0:
+            return [article_name]
 
+        current_neighbors = self.__network[article_name].get_neighbors()
+        names = {neighbor.get_name() for neighbor in current_neighbors}
+        res_set = res_set.union(names)
+        if depth == 1:
+            return list(res_set)
+        # Now we can run and preform a union several times with the set hence avoiding multiples
+        for i in range((depth - 1)):
+            new_neighbors_set = self.community_neighboors(current_neighbors)
+            res_set = res_set.union(new_neighbors_set)
+            current_neighbors = [self.__network[article] for article in new_neighbors_set]
+        # Return the friends_set and convert to a list
+        res = list(res_set)
+        return res
 #TODO: remove later on this over kill
 # net_fail = [('A', 'B'), ('A', 'E'), ('B', 'C'), ('B', 'E'), ('C', 'A'), ('C', 'E'), ('D', 'A')]
-# network=WikiNetwork(read_article_links('ex10_tests/net2.in'))
+# network=WikiNetwork(read_article_links('ex10_tests/net1.in'))
+# print(network.friends_by_depth('C',2))
 # network.update
 # _network(net_fail)
 # print(network)
