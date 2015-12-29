@@ -66,8 +66,14 @@ class WikiNetwork:
 
             if target not in self.__network.keys():
                 self.__network[target] = Article(target)
-
-            self.__network[source].add_neighbor(self.__network[target])
+            # Make sure the edge does not already exist
+            exists = False
+            for article in self.__network[source].get_neighbors():
+                if article.get_name() == target:
+                    exists = True
+                    break
+            if not exists:
+                self.__network[source].add_neighbor(self.__network[target])
 
     def get_articles(self):
         return self.__network.values()
@@ -168,6 +174,7 @@ class WikiNetwork:
             res_list.append(article_name)
         current_neighbors = self.__network[article_name].get_neighbors()
         # As long as we have outgoing neigbors continue to traverse
+        yield article_name
         while len(current_neighbors) != 0:
             degree_N_index_copy = copy.deepcopy(incoming_N_dict_index)
             current_neighbors_dict = {}
@@ -179,18 +186,51 @@ class WikiNetwork:
             sortedByNeighborsIndex = sorted(sortedByTitle, key=lambda a: a[1], reverse=True)
             nextNode = sortedByNeighborsIndex[0][0]
             # In case we made a full circut finish calculating the next node.
-            if nextNode in res_list:
-                break
-            res_list.append(nextNode)
+            #TODO: Remove if code worls with yield
+                # if nextNode in res_list:
+                #     break
+                # res_list.append(nextNode)
             current_neighbors = self.__network[nextNode].get_neighbors()
-            #TODO: create fitting iterator that return appropriate stop iteration.
-        res = iter(res_list)
-        return res
+            yield nextNode
+        
 
     def friends_by_depth(self, article_name, depth):
         pass
 
+#TODO: remove later on this over kill
+# net_fail = [('A', 'B'), ('A', 'E'), ('B', 'C'), ('B', 'E'), ('C', 'A'), ('C', 'E'), ('D', 'A')]
+# network=WikiNetwork(read_article_links('ex10_tests/net2.in'))
+# network.update
+# _network(net_fail)
+# print(network)
 
+'''
+network = WikiNetwork(read_article_links('links1.txt'))
+iterator = network.travel_path_iterator(('Noam'))
+for i in range(10):
+   print(next(iterator))
+'''
+'''
+# Useful class for the iterator
+class Node:
+    def __init__(self, value = None, nextNode = None):
+        self.__value = value
+        self.__next = nextNode
+
+    def value(self):
+        return copy.deepcopy(self.__value)
+    def next(self):
+        return copy.deepcopy(self.__next)
+
+
+# Assisting function that creates an interator from a list and cyclic parameter
+def create_iterator_from_list(members, isCyclic = False, item = None):
+    # in case we have a simple list
+    if isCyclic == False:
+        res = iter(members)
+    #We need to create a cyclic generator
+    else:
+'''
 
 
 
