@@ -22,7 +22,8 @@ ex10.py - contains all the classes and functions implementation.
 ======================
 =  Special Comments  =
 ======================
-Extra comments are inside the function in order to make to code readability better to the naked eye.
+Extra comments are inside the function in order to make to code readability
+better to the naked eye.
 Answers to questins in pdf:
 1) page_rank first 3 values with d=0.9 and iters =50 from left
 to right: 'United_States', 'France', 'Europe'.
