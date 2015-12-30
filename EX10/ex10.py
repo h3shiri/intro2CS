@@ -1,8 +1,11 @@
-#TODO: add proper decomuentation to all the functions..etc
 import copy
 
 # reading the links from a given file.
 def read_article_links(file_name):
+    """
+    @param: file_name
+    @return: list of tuples representing directed edges
+    """
     res = []
     file = open(file_name, 'r')
     text = file.readlines()
@@ -20,7 +23,10 @@ def read_article_links(file_name):
     return res
 
 class Article:
-    """docstring for Article"""
+    """
+    Creating the article class
+    """
+    #Initialising the class
     def __init__(self, name):
         self.__name = name
         self.collection = []
@@ -33,7 +39,6 @@ class Article:
         self.collection.append(neighbor)
     # Return the collection list (neighbors)
     def get_neighbors(self):
-        #TODO: consider returning a copy
         res = self.collection
         return res
     # Represent an Article format
@@ -52,12 +57,17 @@ class Article:
         return res
 
 class WikiNetwork:
-
-    def __init__(self, link_list = []):
+    """
+    Creating a WikiNetwork class,
+    simulating a graph with multiple articles
+    """
+    # Initialise the class
+    def __init__(self, link_list=[]):
         self.__network = dict()
         self.update_network(link_list)
-        
-    def update_network(self, link_list = []):
+
+    # updating the network given a list of edges
+    def update_network(self, link_list=[]):
         for link in link_list:
             source = link[0]
             target = link[1]
@@ -74,45 +84,51 @@ class WikiNetwork:
                     break
             if not exists:
                 self.__network[source].add_neighbor(self.__network[target])
-
+    # Return a list of all the articles the network contains
     def get_articles(self):
         res = [article for article in self.__network.values()]
         return res
 
+    # Return list of all the titles included in the network
     def get_titles(self):
         res = [str(title) for title in self.__network.keys()]
         return res
-
+    # Return boolean whether a given title is is the wiki
     def __contains__(self, article_name):
         return (article_name in self.get_titles())
 
+    # Return number of articles in the wiki
     def __len__(self):
         return len(self.__network.keys())
 
+    # Create a repr of the network
     def __repr__(self):
         return str(self.__network)
 
+    # Returns an Article object with the given title, raise exception in case it doesn't exist
     def __getitem__(self, article_name):
         if article_name not in self.get_titles():
             raise KeyError(article_name)
         return self.__network[article_name]
 
-    #TODO: check why it fails on so many tests
+    # Implementation of the Larry Page algorithm
     def page_rank(self, iters, d=0.9):
+        """
+        @self: the WikiNetwork
+        @iters: number of iterations
+        @d: An important constant in the algorithm arithmetic
+        @return: sorted list of titles by the Larry Page index and secondly lexicographically.
+        """
         # We create a dictionary that contains, for each title, it's page rank number
         ranks = dict()
-        
         # Create all titles in dictionary and set their ranks to 1
         for title in self.get_titles():
             ranks[title] = 1
-
         # Here are the iterations
         for i in range(iters):
-
-            # Create the new ranks dictionary. We want this to be separate so that by changing the ranks
-            # we don't affect the old values.
+            # New Separate independent dictionary derived from the previous one.
             newRanks = dict()
-            # residude from all the article is always 1-d
+            # residue from all the article is always 1-d
             for title in self.get_titles():
                 newRanks[title] = 1 - d
 
@@ -121,15 +137,14 @@ class WikiNetwork:
                 neighbors = self.__network[title].get_neighbors()
                 for neighbor in neighbors:
                     newRanks[neighbor.get_name()] += (d * (ranks[title]/len(neighbors)))
-
             ranks = copy.deepcopy(newRanks)
-
+        # Sorting according to specs.
         sortedByTitle = sorted(ranks.items(), key=lambda a: a[0])
         sortedByRank = sorted(sortedByTitle, key=lambda a: a[1], reverse=True)
 
-        return [ titleAndRankTuple[0] for titleAndRankTuple in sortedByRank ]
+        return [titleAndRankTuple[0] for titleAndRankTuple in sortedByRank]
 
-    # Soring the the articles by Jaccard index and secondly by lexicography.
+    # Soring the the articles by Jaccard_index and secondly by lexicography.
     def jaccard_index(self, article_name):
         jaccard_dictionary = {}
         # return None in case of no neighboors or non-existing title
@@ -158,7 +173,6 @@ class WikiNetwork:
 
         return [ articleTitleAndIndexTuple[0] for articleTitleAndIndexTuple in sortedByJaccIndex ]
 
-    #TODO: check maybe to re-write iterator in order fix StopIterator exception..
     def travel_path_iterator(self, article_name):
         if article_name not in self.get_titles():
             return iter([])
@@ -227,59 +241,3 @@ class WikiNetwork:
         # Return the friends_set and convert to a list
         res = list(res_set)
         return res
-#TODO: remove later on this over kill
-# net_fail = [('A', 'B'), ('A', 'E'), ('B', 'C'), ('B', 'E'), ('C', 'A'), ('C', 'E'), ('D', 'A')]
-# network=WikiNetwork(read_article_links('ex10_tests/net1.in'))
-# print(network.friends_by_depth('C',2))
-# network.update
-# _network(net_fail)
-# print(network)
-
-'''
-network = WikiNetwork(read_article_links('links1.txt'))
-iterator = network.travel_path_iterator(('Noam'))
-for i in range(10):
-   print(next(iterator))
-'''
-'''
-# Useful class for the iterator
-class Node:
-    def __init__(self, value = None, nextNode = None):
-        self.__value = value
-        self.__next = nextNode
-
-    def value(self):
-        return copy.deepcopy(self.__value)
-    def next(self):
-        return copy.deepcopy(self.__next)
-
-
-# Assisting function that creates an interator from a list and cyclic parameter
-def create_iterator_from_list(members, isCyclic = False, item = None):
-    # in case we have a simple list
-    if isCyclic == False:
-        res = iter(members)
-    #We need to create a cyclic generator
-    else:
-'''
-
-
-
-# TODO: remove tests later on ,this one refrers to the silly links..
-'''
-network = WikiNetwork(read_article_links('links.txt'));
-print('Hello!')
-print(network.page_rank(3))
-'''
-'''
-network = WikiNetwork(read_article_links('links2.txt'));
-print(network.jaccard_index('Beer')[1])
-'''
-
-'''
-print("processed network")
-iterator = network.travel_path_iterator('Hitler')
-i=0
-for i in range(2):
-    print(iterator.next())
-'''

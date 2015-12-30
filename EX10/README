@@ -33,4 +33,10 @@ Israel - Yemen,
 United_States - Driving_on_the_left_or_right,
 Algebra - Calculus
 World_War_II - Adolf_Hitler
-3)Precentage of articles from a given distance from a source article:
+3)Precentage of articles from a given distance from a source:
+article: Christopher_Columbus, distance: 1 
+precentage: 0.91683038637852
+article: DNA, distance: 2
+precentage: 13.758462546407513
+article: History, distance: 3
+precentage: 61.69469316444639
