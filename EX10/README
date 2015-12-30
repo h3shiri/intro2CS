@@ -5,6 +5,7 @@ Shiri Heffetz
 ====================================
 = README for ex10 articles-network =
 ====================================
+Building a network of articles.
 
 ==================
 =  Description:  =
@@ -22,3 +23,14 @@ ex10.py - contains all the classes and functions implementation.
 =  Special Comments  =
 ======================
 Extra comments are inside the function in order to make to code readability better to the naked eye.
+Answers to questins in pdf:
+1) page_rank first 3 values with d=0.9 and iters =50 from left
+to right: 'United_States', 'France', 'Europe'.
+2)jaccard_index highest result after the given article:
+input on the left, the closest article after the on the right:
+United_Kingdom - Scotland, 
+Israel - Yemen, 
+United_States - Driving_on_the_left_or_right,
+Algebra - Calculus
+World_War_II - Adolf_Hitler
+3)Precentage of articles from a given distance from a source article:
