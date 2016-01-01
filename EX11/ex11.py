@@ -163,6 +163,8 @@ def integral_function(f, delta=0.01):
         elif x < 0:
             g = mul_functions(f, const_function(-1))
             return definite_integral(g, x, 0, num_of_segments)
+        else:
+            return 0
     return res_func
 
 def ex11_func_list():
@@ -187,8 +189,6 @@ def ex11_func_list():
     temp4 = sum_functions(cos, const_function(2))
     f4 = div_functions(sin,temp4)
     func_list.append(f4)
-    #TODO: Remove comment check which implementation syntax is wrong
-    '''
     #Create function5
     x_squared = mul_functions(identity(), identity())
     linear_part = sub_functions(identity(), const_function(3))
@@ -204,7 +204,6 @@ def ex11_func_list():
     x_cubed = mul_functions(x_squared, identity())
     f7 = inverse(x_cubed)
     func_list.append(f7)
-    '''
     return func_list
 
 # function that genrate the figure in the ex description
@@ -235,6 +234,7 @@ f = lambda x: x**2 - 7
 M = solve(f, 0, 5, epsilon = 0.0001)
 print(f(M)<0.0001,M)
 '''
+#TODO: check whether to delete main driver...etc
 #Remove comment to run graphic display
 if __name__ == "__main__":
     import tkinter as tk
@@ -242,10 +242,12 @@ if __name__ == "__main__":
     master = tk.Tk()
     graph = Graph(master, -10, -10, 10, 10)
 
-    plot_func(graph,example_func,-10,10,SEGMENTS,'red')
     color_arr = ['black', 'blue', 'red', 'green', 'brown', 'purple',
                  'dodger blue', 'orange']
-    for f in ex11_func_list():
-        plot_func(graph, f, -10, 10, SEGMENTS, 'red')
+    func_list = ex11_func_list()
+    for f in func_list:
+        color_index = func_list.index(f)
+        color = color_arr[color_index]
+        plot_func(graph, f, -10, 10, SEGMENTS, color)
 
     master.mainloop()
