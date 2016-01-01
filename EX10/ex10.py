@@ -126,7 +126,7 @@ class WikiNetwork:
 
         sortedByTitle = sorted(ranks.items(), key=lambda a: a[0])
         sortedByRank = sorted(sortedByTitle, key=lambda a: a[1], reverse=True)
-
+        print(dict(sortedByRank)['United_states'])
         return [ titleAndRankTuple[0] for titleAndRankTuple in sortedByRank ]
 
     # Soring the the articles by Jaccard index and secondly by lexicography.
