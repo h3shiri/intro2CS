@@ -34,23 +34,28 @@ class Article:
     # Retrurn the name of the article
     def get_name(self):
         return self.__name
+
     # Add a neighbor to the collection
     def add_neighbor(self, neighbor):
         self.collection.append(neighbor)
+
     # Return the collection list (neighbors)
     def get_neighbors(self):
         res = self.collection
         return res
+
     # Represent an Article format
     def __repr__(self):
         r1 = self.get_name()
         neighbors = self.get_neighbors()
         neighbors_names = [neighbor.get_name() for neighbor in neighbors]
         return str((r1, neighbors_names))
+
     # Return the number of neighbors
     def __len__(self):
         res = len(self.get_neighbors())
         return res
+
     # Determine whether an article is an outgoing neighbor
     def __contains__(self, article):
         res = article in self.collection
@@ -146,6 +151,11 @@ class WikiNetwork:
 
     # Soring the the articles by Jaccard_index and secondly by lexicography.
     def jaccard_index(self, article_name):
+        """
+        @self: the WikiNetwork
+        @article_name: the article's name
+        @return: sorted list of titles (of Article objects) according to Jaccard_index and lexicographically(secondly)
+        """
         jaccard_dictionary = {}
         # return None in case of no neighboors or non-existing title
         if article_name not in self.__network.keys():
@@ -174,6 +184,13 @@ class WikiNetwork:
         return [ articleTitleAndIndexTuple[0] for articleTitleAndIndexTuple in sortedByJaccIndex ]
 
     def travel_path_iterator(self, article_name):
+        """
+        @self: A gien WikiNetwork
+        @article_name: the article's name we wish to begin the path from
+        @return: generator of titles
+        we traverse the graph according from one node to another according to the neighbor with the highest
+        incoming edges degree (in case of few we select lexicographically) 
+        """
         if article_name not in self.get_titles():
             return iter([])
         # Pre calculate the incoming neighbors index for all the articles
@@ -219,6 +236,12 @@ class WikiNetwork:
         return copy.deepcopy(res_set)
 
     def friends_by_depth(self, article_name, depth):
+        """
+        @self: the WikiNetwork
+        @article_name: the name of the article
+        @depth: positive integer indicating how far we shal search for neighbors
+        @return: A list of neighbors in less then or equal distance of 'depth' traversing the graph.
+        """
         res_set = set()
         # friend by distance zero
         res_set.add(article_name)
