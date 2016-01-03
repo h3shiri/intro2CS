@@ -101,9 +101,9 @@ def inverse(g, epsilon=EPSILON):
     """return f s.t. f(g(x)) = x"""
     def result(x):
         # Search magic numbers
-        SEARCH_FACTOR = 5
-        L_BOUND = -1
-        R_BOUND = 1
+        SEARCH_FACTOR = 10
+        L_BOUND = -20
+        R_BOUND = 20
         # looking for the appropriate value to return in the inverse function using solve.
         const_x = const_function(x)
         h = sub_functions(g, const_x)
@@ -128,11 +128,11 @@ def compose(g, h):
 
 def derivative(g, delta=DELTA):
     """return f s.t. f(x) = g'(x)"""
-    utility_func = lambda x: x + delta
+    utility_func = lambda x: (x + delta)
     temp1 = compose(g, utility_func)
     temp2 = sub_functions(temp1, g)
-    temp3 = const_function((1/delta))
-    res_function = mul_functions(temp2, temp3)
+    temp3 = const_function(delta)
+    res_function = div_functions(temp2, temp3)
     return res_function
 
 
