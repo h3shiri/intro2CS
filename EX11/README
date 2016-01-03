@@ -1,0 +1,24 @@
+h3shiri
+206098311
+Shiri Heffetz
+
+=======================================
+= README for ex11 2nd order functions =
+=======================================
+
+==================
+=  Description:  =
+==================
+We have implemented all the functions from the ex-pdf.
+We created few second order function, drew graphs and small
+mathematical calculation over arithmetical functions.
+=============================
+=  List of submitted files: =
+=============================
+
+README - this file
+ex11.py - contains all the functions implementation and docstings..etc
+======================
+=  Special Comments  =
+======================
+See extra comments inside the functions.
