@@ -1,4 +1,3 @@
-#TODO: check whether to insert assertion on the input of all these functions
 import math
 EPSILON = 1e-5
 DELTA = 1e-3
@@ -209,33 +208,6 @@ def ex11_func_list():
 def example_func(x):
     return (x/5)**3
 
-
-#TODO: remember to remove tests
-'''
-g = lambda x: x**3
-h = integral_function(g)
-m = derivative(h)
-print(m(2))
-'''
-'''
-g = lambda x: x**5
-h = derivative(g, 0.001)
-print(h(2))
-'''
-'''
-f = lambda x: x**3
-g = inverse(f, 0.01)
-h = compose(f,g)
-print(h(40))
-'''
-'''
-f = lambda x: x**2 - 7
-M = solve(f, 0, 5, epsilon = 0.0001)
-print(f(M)<0.0001,M)
-'''
-
-#TODO: check whether to delete main driver...etc
-#Remove comment to run graphic display
 if __name__ == "__main__":
     import tkinter as tk
     from ex11helper import Graph
