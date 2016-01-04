@@ -31,7 +31,7 @@ def const_function(c):
 
 def identity():
     """return the mathematical function f such that f(x) = x
-    >>>identity()(3)
+    >>> identity()(3)
     3
     """
     return lambda x: x
@@ -39,7 +39,7 @@ def identity():
 
 def sin_function():
     """return the mathematical function f such that f(x) = sin(x)
-    >>> sinF()(math.pi/2)
+    >>> sin_function()(math.pi/2)
     1.0
     """
     return lambda x: math.sin(x)
@@ -139,7 +139,7 @@ def derivative(g, delta=DELTA):
 def definite_integral(f, x0, x1, num_of_segments=SEGMENTS):
     """
     return a float - the definite_integral of f between x0 and x1
-    >>>definite_integral(const_function(3),-2,3)
+    >>> definite_integral(const_function(3),-2,3)
     15
     """
     delta = ((x1 - x0)/num_of_segments)
@@ -152,7 +152,6 @@ def definite_integral(f, x0, x1, num_of_segments=SEGMENTS):
         temp = ((xLeft + xRight)/2)
         tot_sum += ((f(temp))*delta)
     return tot_sum
-
 
 def integral_function(f, delta=0.01):
     """return F such that F'(x) = f(x)"""
@@ -234,6 +233,7 @@ f = lambda x: x**2 - 7
 M = solve(f, 0, 5, epsilon = 0.0001)
 print(f(M)<0.0001,M)
 '''
+
 #TODO: check whether to delete main driver...etc
 #Remove comment to run graphic display
 if __name__ == "__main__":
