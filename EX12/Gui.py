@@ -3,20 +3,21 @@ TRIANGLE = 'triangle'
 CIRCLE = 'circle'
 LINE = 'line'
 RECTANGLE = 'rectangle'
-
+COLOR_LIST = ['blue', 'red', 'pink', 'green', 'yellow', 'black', 'orange']
 class GuiRunner():
     def __init__(self, parent):
         #Building the Gui
         self._parent = parent
         self.__coordinates_list = []
+        self.__color = 'black'
         self.canvas = tki.Canvas(parent, width=200 ,height=200, highlightbackground='blue')
         self.canvas.pack(side='right')
         self.canvas.bind("<Button-1>", self.CoordinateClick)
-        self.TextBox = tki.Listbox(parent, width=30, height=20)
+        self.TextBox = tki.Listbox(parent, width=10, height=10)
         self.TextBox.pack(side='left')
         self.TextBox.anchor('nw')
-        self.scale = tki.Scale(parent, from_=0, to=200)
-        self.scale.pack(side='left')
+        # self.scale = tki.Scale(parent, from_=0, to=200)
+        # self.scale.pack(side='left')
         self.ButtonTriangle = tki.Button(parent, command=self.DrawTriangle, text="Triangle")
         self.ButtonTriangle.pack(side='top')
         self.ButtonLine = tki.Button(parent, command=self.DrawLine, text="Line")
@@ -25,6 +26,13 @@ class GuiRunner():
         self.ButtonRectangle.pack(side='top')
         self.ButtonRectangle = tki.Button(parent,command=self.DrawCircle, text="Circle")
         self.ButtonRectangle.pack(side='top')
+        self.colorlist = tki.Listbox(parent, width = 10, height=10)
+        self.colorlist.pack()
+        self.colorlist.anchor('ne')
+
+        for color in COLOR_LIST:
+            i = COLOR_LIST.index(color)
+            self.colorlist.insert(i, color)
 
     #Pre-work for drawing shapes
     def DrawLine(self):
@@ -49,17 +57,20 @@ class GuiRunner():
         elif (coordinates_list[-2] == LINE and type(coordinates_list[-1]) == tuple):
             first_coordinate = coordinates_list[-1]
             second_coordinate = (event.x, event.y)
-            self.canvas.create_line(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], fill='red', width=2)
+            color = self.__color
+            self.canvas.create_line(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], fill=color, width=2)
             self.__coordinates_list = []
         elif (coordinates_list[-2] == CIRCLE and type(coordinates_list[-1]) == tuple):
             first_coordinate = coordinates_list[-1]
             second_coordinate = (event.x, event.y)
-            self.canvas.create_oval(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], fill='red', width=2)
+            color = self.__color
+            self.canvas.create_oval(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], fill=color, width=2)
             self.__coordinates_list = []
         elif (coordinates_list[-2] == RECTANGLE and type(coordinates_list[-1]) == tuple):
             first_coordinate = coordinates_list[-1]
             second_coordinate = (event.x, event.y)
-            self.canvas.create_rectangle(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], fill='red', width=2)
+            color = self.__color
+            self.canvas.create_rectangle(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], fill=color, width=2)
             self.__coordinates_list = []
         elif (len(coordinates_list) >= 3):
             if (coordinates_list[-3] == TRIANGLE and \
@@ -67,7 +78,8 @@ class GuiRunner():
                 first_coordinate = coordinates_list[-1]
                 second_coordinate = coordinates_list[-2]
                 third_coordinate = (event.x, event.y)
-                self.canvas.create_polygon(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], third_coordinate[0], third_coordinate[1], fill='pink', width=2)
+                color = self.__color
+                self.canvas.create_polygon(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], third_coordinate[0], third_coordinate[1], fill=color, width=2)
                 self.__coordinates_list = []
         else:
             coordinates = (event.x, event.y)
