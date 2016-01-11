@@ -1,23 +1,25 @@
 import tkinter as tki
+from tkinter import messagebox
 TRIANGLE = 'triangle'
 CIRCLE = 'circle'
 LINE = 'line'
 RECTANGLE = 'rectangle'
-COLOR_LIST = ['blue', 'red', 'pink', 'green', 'yellow', 'black', 'orange']
+COLOR_LIST = ['blue', 'red', 'violet', 'green', 'yellow', 'black', 'orange']
+
+#TODO: edit help message
+HELP_MESSAGE = 'Help Me!!'
 class GuiRunner():
     def __init__(self, parent):
         #Building the Gui
         self._parent = parent
         self.__coordinates_list = []
         self.__color = 'black'
-        self.canvas = tki.Canvas(parent, width=200 ,height=200, highlightbackground='blue')
+        self.canvas = tki.Canvas(parent, width=500 ,height=500, highlightbackground='blue')
         self.canvas.pack(side='right')
         self.canvas.bind("<Button-1>", self.CoordinateClick)
         self.TextBox = tki.Listbox(parent, width=10, height=10)
         self.TextBox.pack(side='left')
         self.TextBox.anchor('nw')
-        # self.scale = tki.Scale(parent, from_=0, to=200)
-        # self.scale.pack(side='left')
         self.ButtonTriangle = tki.Button(parent, command=self.DrawTriangle, text="Triangle")
         self.ButtonTriangle.pack(side='top')
         self.ButtonLine = tki.Button(parent, command=self.DrawLine, text="Line")
@@ -28,9 +30,12 @@ class GuiRunner():
         self.ButtonRectangle.pack(side='top')
         self.color_choice = tki.StringVar()
         self.color_choice.set("Color")
-        self.color_options = tki.OptionMenu(parent, self.color_choice, 'pink', 'blue', 'red', 'green', 'yellow', 'black', 'orange')
+        self.color_options = tki.OptionMenu(parent, self.color_choice, 'violet', 'blue', 'red', 'green', 'yellow', 'black', 'orange')
         self.color_options.pack(side='top')
-
+        self.HelpOption = tki.Button(parent, command=self.DisplayHelpMessage, text='Help' )
+        self.HelpOption.pack()
+        self.DebugButton = tki.Button(parent, command=self.DebugMessage, text='Debug')
+        self.DebugButton.pack()
 
     #Pre-work for drawing shapes
     def DrawLine(self):
@@ -83,6 +88,12 @@ class GuiRunner():
         else:
             coordinates = (event.x, event.y)
             self.__coordinates_list.append(coordinates)
+    def DisplayHelpMessage(event):
+        messagebox.showinfo('Help', HELP_MESSAGE)
+
+    #TODO: Implement this function..
+    def DebugMessage(event):
+        pass
 
 Ultimate_root = tki.Tk()
 GuiRunner(Ultimate_root)
