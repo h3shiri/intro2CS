@@ -26,13 +26,11 @@ class GuiRunner():
         self.ButtonRectangle.pack(side='top')
         self.ButtonRectangle = tki.Button(parent,command=self.DrawCircle, text="Circle")
         self.ButtonRectangle.pack(side='top')
-        self.colorlist = tki.Listbox(parent, width = 10, height=10)
-        self.colorlist.pack()
-        self.colorlist.anchor('ne')
+        self.color_choice = tki.StringVar()
+        self.color_choice.set("Color")
+        self.color_options = tki.OptionMenu(parent, self.color_choice, 'pink', 'blue', 'red', 'green', 'yellow', 'black', 'orange')
+        self.color_options.pack(side='top')
 
-        for color in COLOR_LIST:
-            i = COLOR_LIST.index(color)
-            self.colorlist.insert(i, color)
 
     #Pre-work for drawing shapes
     def DrawLine(self):
@@ -50,6 +48,11 @@ class GuiRunner():
 
     def CoordinateClick(self, event):
         coordinates_list = self.__coordinates_list
+        if self.color_choice.get() == 'Color':
+            self.__color = 'black'
+        else:
+            self.__color = self.color_choice.get()
+        color = self.__color
         if len(coordinates_list) <= 1:
             coordinates = (event.x, event.y)
             self.__coordinates_list.append(coordinates)
@@ -57,19 +60,16 @@ class GuiRunner():
         elif (coordinates_list[-2] == LINE and type(coordinates_list[-1]) == tuple):
             first_coordinate = coordinates_list[-1]
             second_coordinate = (event.x, event.y)
-            color = self.__color
             self.canvas.create_line(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], fill=color, width=2)
             self.__coordinates_list = []
         elif (coordinates_list[-2] == CIRCLE and type(coordinates_list[-1]) == tuple):
             first_coordinate = coordinates_list[-1]
             second_coordinate = (event.x, event.y)
-            color = self.__color
             self.canvas.create_oval(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], fill=color, width=2)
             self.__coordinates_list = []
         elif (coordinates_list[-2] == RECTANGLE and type(coordinates_list[-1]) == tuple):
             first_coordinate = coordinates_list[-1]
             second_coordinate = (event.x, event.y)
-            color = self.__color
             self.canvas.create_rectangle(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], fill=color, width=2)
             self.__coordinates_list = []
         elif (len(coordinates_list) >= 3):
@@ -78,7 +78,6 @@ class GuiRunner():
                 first_coordinate = coordinates_list[-1]
                 second_coordinate = coordinates_list[-2]
                 third_coordinate = (event.x, event.y)
-                color = self.__color
                 self.canvas.create_polygon(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], third_coordinate[0], third_coordinate[1], fill=color, width=2)
                 self.__coordinates_list = []
         else:
