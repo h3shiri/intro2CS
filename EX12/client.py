@@ -57,14 +57,12 @@ class Client():
         print(message_class.actions_types)
         if action == "users":
             users = message_class._raw_list[1].split(",")
-            print(users)
             for user in users:
                 self._online_users.add(user)
                 self.gui.AddToUserBox()
         
         elif action == "join":
             user = message_class._raw_list[1]
-            print(user)
             self._online_users.add(user)
             self.gui.AddToUserBox()
         elif action == 'leave':
@@ -72,9 +70,27 @@ class Client():
             if user in self._online_users:
                 self._online_users.remove(user)
                 self.gui.deleteUserFromUserBox(user)
+        elif action == "error":
+            error = message_class._raw_list[1]
+            self.gui._debug_message = error
+        elif action == "shape":
+            self.shape_proccesor(message_class)
 
         message_class.actions_types.remove(action)
-        
+    
+    def shape_proccesor(self, message_class):
+        username = message_class._raw_list[1]
+        shape = message_class._raw_list[2]
+        color = message_class._raw_list[-1]
+        coordinates = message_class._raw_list[3].split(",")
+        if shape == 'line' and message_class._raw_list[1] != self.username:
+            self.gui.createLine(coordinates, color)
+        elif shape == 'rectangle' and message_class._raw_list[1] != self.username:
+            self.gui.createRectangle(coordinates, color)
+        elif shape == 'oval' and message_class._raw_list[1] != self.username:
+            self.gui.createCircle(coordinates, color)
+
+
 class Message():
     """docstring for Message"""
     def __init__(self, Server_message):
