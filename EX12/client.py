@@ -84,11 +84,13 @@ class Client():
         color = message_class._raw_list[-1]
         coordinates = message_class._raw_list[3].split(",")
         if shape == 'line' and message_class._raw_list[1] != self.username:
-            self.gui.createLine(coordinates, color)
+            self.gui.createLine(coordinates, color, username)
         elif shape == 'rectangle' and message_class._raw_list[1] != self.username:
-            self.gui.createRectangle(coordinates, color)
+            self.gui.createRectangle(coordinates, color, username)
         elif shape == 'oval' and message_class._raw_list[1] != self.username:
-            self.gui.createCircle(coordinates, color)
+            self.gui.createCircle(coordinates, color, username)
+        elif shape == 'triangle' and message_class._raw_list[1] != self.username:
+            self.gui.createTriangle(coordinates, color, username)
 
 
 class Message():
@@ -118,3 +120,6 @@ if __name__ == '__main__':
     username = sys.argv[3]
     group = sys.argv[4]
     Client(username, group)
+
+#TODO: solve board filling/update problem when joinnning an already existing game..)
+#TODO: remember to remove all the prints orders

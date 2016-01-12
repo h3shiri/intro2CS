@@ -75,7 +75,7 @@ class GuiRunner():
             second_coordinate = (event.x, event.y)
             self.canvas.create_line(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], fill=color, width=2)
 
-            #self.canvas.create_text(second_coordinate[0],second_coordinate[1], second_coordinate[0]+0.7, second_coordinate[1]+0.7, text=self.client.username)
+            self.canvas.create_text(second_coordinate[0],second_coordinate[1], text=self.client.username)
             self.__coordinates_list = []
             # Send the shape creation to the server
             self.Send_Shape_creation('line', first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1])
@@ -83,26 +83,16 @@ class GuiRunner():
             first_coordinate = coordinates_list[-1]
             second_coordinate = (event.x, event.y)
             self.canvas.create_oval(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], fill=color, width=2)
+            self.canvas.create_text(second_coordinate[0],second_coordinate[1], text=self.client.username)
             self.__coordinates_list = []
             self.Send_Shape_creation('oval', first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1])
-            # coordinates_text = ",".join([str(first_coordinate[0]), str(first_coordinate[1]), str(second_coordinate[0]), str(second_coordinate[1])])
-            # username = self.client.username
-            # seperator = ';'
-            # Pre_work_out = seperator.join(['shape','oval',coordinates_text,color])
-            # text = str(Pre_work_out+'\n')
-            # self.client.__send_message__(text)
         elif (coordinates_list[-2] == RECTANGLE and type(coordinates_list[-1]) == tuple):
             first_coordinate = coordinates_list[-1]
             second_coordinate = (event.x, event.y)
             self.canvas.create_rectangle(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], fill=color, width=2)
+            self.canvas.create_text(second_coordinate[0],second_coordinate[1], text=self.client.username)
             self.__coordinates_list = []
             self.Send_Shape_creation('rectangle', first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1])
-            # coordinates_text = ",".join([str(first_coordinate[0]), str(first_coordinate[1]), str(second_coordinate[0]), str(second_coordinate[1])])
-            # username = self.client.username
-            # seperator = ';'
-            # Pre_work_out = seperator.join(['shape','rectangle',coordinates_text,color])
-            # text = str(Pre_work_out+'\n')
-            # self.client.__send_message__(text)
         elif (len(coordinates_list) >= 3):
             if (coordinates_list[-3] == TRIANGLE and \
                (type(coordinates_list[-2]) == tuple and type(coordinates_list[-1]) == tuple)):
@@ -110,8 +100,9 @@ class GuiRunner():
                 second_coordinate = coordinates_list[-2]
                 third_coordinate = (event.x, event.y)
                 self.canvas.create_polygon(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], third_coordinate[0], third_coordinate[1], fill=color, width=2)
+                self.canvas.create_text(third_coordinate[0],third_coordinate[1], text=self.client.username)
                 self.__coordinates_list = []
-
+                self.Send_triangle_creation('triangle', first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], third_coordinate[0], third_coordinate[1])
         else:
             coordinates = (event.x, event.y)
             self.__coordinates_list.append(coordinates)
@@ -136,26 +127,39 @@ class GuiRunner():
         messagebox.showinfo('Debug', self._debug_message)
 
     #TODO: add appropriate text box with username
-    def createLine(self, coordinates, color):
+    def createLine(self, coordinates, color, username):
         c1_x = int(coordinates[0])
         c1_y = int(coordinates[1])
         c2_x = int(coordinates[2])
         c2_y = int(coordinates[3])
         self.canvas.create_line(c1_x, c1_y, c2_x, c2_y, fill=color, width=2)
+        self.canvas.create_text(c2_x,c2_y, text=username)
 
-    def createRectangle(self, coordinates,color):
+    def createRectangle(self, coordinates,color, username):
         c1_x = int(coordinates[0])
         c1_y = int(coordinates[1])
         c2_x = int(coordinates[2])
         c2_y = int(coordinates[3])
         self.canvas.create_rectangle(c1_x, c1_y, c2_x, c2_y, fill=color, width=2)
+        self.canvas.create_text(c2_x,c2_y, text=username)
 
-    def createCircle(self, coordinates, color):
+    def createCircle(self, coordinates, color, username):
         c1_x = int(coordinates[0])
         c1_y = int(coordinates[1])
         c2_x = int(coordinates[2])
         c2_y = int(coordinates[3])
         self.canvas.create_oval(c1_x, c1_y, c2_x, c2_y, fill=color, width=2)
+        self.canvas.create_text(c2_x,c2_y, text=username)
+
+    def createTriangle(self, coordinates, color, username):
+        c1_x = int(coordinates[0])
+        c1_y = int(coordinates[1])
+        c2_x = int(coordinates[2])
+        c2_y = int(coordinates[3])
+        c3_x = int(coordinates[4])
+        c3_y = int(coordinates[5])
+        self.canvas.create_polygon(c1_x, c1_y, c2_x, c2_y, c3_x, c3_y, fill=color, width=2)
+        self.canvas.create_text(c3_x,c3_y, text=username)
 
     def Send_Shape_creation(self,shape, x1, y1, x2, y2):
         coordinates_text = ",".join([str(x1), str(y1), str(x2), str(y2)])
@@ -165,3 +169,12 @@ class GuiRunner():
         Pre_work_out = seperator.join(['shape', shape, coordinates_text,color])
         text = str(Pre_work_out+'\n')
         self.client.__send_message__(text)
+
+    def Send_triangle_creation(self, shape, x1, y1, x2, y2, x3, y3):
+        coordinates_text = ",".join([str(x1), str(y1), str(x2), str(y2), str(x3), str(y3)])
+        username = self.client.username
+        seperator = ';'
+        color = self.__color
+        Pre_work_out = seperator.join(['shape', shape, coordinates_text,color])
+        text = str(Pre_work_out+'\n')
+        self.client.__send_message__(text)    
