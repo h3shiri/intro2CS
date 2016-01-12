@@ -3,35 +3,44 @@ import socket
 import math
 import PIL
 import copy
+import Gui
+import tkinter as tki
 
-class Message:
-	def __init__(self):
-		self.__send_message = ""
-
-
-# Receiving data from server...etc
-HOST = socket.gethostname()
-PORT = 5679
-MAXIMUM_NUMBER_OF_QUEUED_CONNECTIONS = 0
+HOST = sys.argv[1]
+PORT = int(sys.argv[2])
 MAX_DATA_CHUNK = 1024
-print("Before the sockets")
-server_socket = socket.socket()
-server_socket.bind((HOST, PORT))
-server_socket.listen(MAXIMUM_NUMBER_OF_QUEUED_CONNECTIONS)
+    
+class Client():
+    """docstring for Client"""
+    def __init__(self, username,group):
+        self.username = username
+        self.group = group
+        print("Before the sockets")
+        self.connect_to_server()
+        Ultimate_root = tki.Tk()
+        self.gui = Gui.GuiRunner(Ultimate_root,self)
+        self.gui.queue_for_running(self.recieve_server_messages)
+        Ultimate_root.mainloop()
 
-(transmission_socket, client_address) = server_socket.accept()
-print("pre-transmition")
-while True:
-    encoded_data = transmission_socket.recv(MAX_DATA_CHUNK)
-    if not encoded_data:
-        # Data transmission ended
-        print("Hello!")
-        break
-    else:
-        # Do something with the data
-        print(encoded_data.decode('ascii'))
-        reply_msg = bytes('Bye', 'ascii')
-        transmission_socket.sendall(reply_msg)
+    def __send_message__(self,msg):
+        self.socket.sendall(msg.encode())
 
-transmission_socket.close()
-server_socket.close()
+    def connect_to_server(self):
+        self.socket = socket.socket()
+        self.socket.connect((HOST,PORT))
+        self.__send_message__('join;%s;%s\n'%(username,group))
+    
+    def recieve_server_messages(self):
+        print("read messages")
+        res = self.socket.recv(MAX_DATA_CHUNK)
+        if res == None:
+            return
+        print('abcd')
+        messages = res.decode()
+        print(messages)
+        self.gui.queue_for_running(self.recieve_server_messages)
+
+if __name__ == '__main__':
+    username = sys.argv[3]
+    group = sys.argv[4]
+    Client(username,group)

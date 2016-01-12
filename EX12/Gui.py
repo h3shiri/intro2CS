@@ -1,5 +1,6 @@
 import tkinter as tki
 from tkinter import messagebox
+WAIT_TIME = 10000
 TRIANGLE = 'triangle'
 CIRCLE = 'circle'
 LINE = 'line'
@@ -9,8 +10,9 @@ COLOR_LIST = ['blue', 'red', 'violet', 'green', 'yellow', 'black', 'orange']
 #TODO: edit help message
 HELP_MESSAGE = 'Help Me!!'
 class GuiRunner():
-    def __init__(self, parent):
+    def __init__(self, parent,client):
         #Building the Gui
+        self.client = client
         self._parent = parent
         self.__coordinates_list = []
         self.__color = 'black'
@@ -35,7 +37,11 @@ class GuiRunner():
         self.HelpOption = tki.Button(parent, command=self.DisplayHelpMessage, text='Help' )
         self.HelpOption.pack()
         self.DebugButton = tki.Button(parent, command=self.DebugMessage, text='Debug')
-        self.DebugButton.pack()
+        self.DebugButton.pack()       
+    
+    def queue_for_running(self,func):
+        print('hello')
+        self._parent.after(WAIT_TIME,func)
 
     #Pre-work for drawing shapes
     def DrawLine(self):
@@ -95,7 +101,4 @@ class GuiRunner():
     def DebugMessage(event):
         pass
 
-Ultimate_root = tki.Tk()
-GuiRunner(Ultimate_root)
-Ultimate_root.mainloop()
 
