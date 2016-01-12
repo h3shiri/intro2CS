@@ -1,6 +1,6 @@
 import tkinter as tki
 from tkinter import messagebox
-WAIT_TIME = 10000
+WAIT_TIME = 1000
 TRIANGLE = 'triangle'
 CIRCLE = 'circle'
 LINE = 'line'
@@ -13,15 +13,17 @@ class GuiRunner():
     def __init__(self, parent,client):
         #Building the Gui
         self.client = client
+        self._active_players = []
         self._parent = parent
         self.__coordinates_list = []
         self.__color = 'black'
         self.canvas = tki.Canvas(parent, width=500 ,height=500, highlightbackground='blue')
         self.canvas.pack(side='right')
         self.canvas.bind("<Button-1>", self.CoordinateClick)
-        self.TextBox = tki.Listbox(parent, width=10, height=10)
-        self.TextBox.pack(side='left')
-        self.TextBox.anchor('nw')
+        self.UsersBox = tki.Listbox(parent, width=10, height=10)
+        #self.UsersBox.yview()
+        self.UsersBox.pack(side='left')
+        self.UsersBox.anchor('nw')
         self.ButtonTriangle = tki.Button(parent, command=self.DrawTriangle, text="Triangle")
         self.ButtonTriangle.pack(side='top')
         self.ButtonLine = tki.Button(parent, command=self.DrawLine, text="Line")
@@ -40,7 +42,6 @@ class GuiRunner():
         self.DebugButton.pack()       
     
     def queue_for_running(self,func):
-        print('hello')
         self._parent.after(WAIT_TIME,func)
 
     #Pre-work for drawing shapes
@@ -97,6 +98,13 @@ class GuiRunner():
     def DisplayHelpMessage(event):
         messagebox.showinfo('Help', HELP_MESSAGE)
 
+    def AddToUserBox(self):
+        users = list(self.client._online_users)
+        print(users)
+        for user in users:
+            if user not in self._active_players:
+                self.UsersBox.insert(0, user)
+                self._active_players.append(user)
     #TODO: Implement this function..
     def DebugMessage(event):
         pass

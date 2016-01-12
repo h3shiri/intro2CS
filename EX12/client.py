@@ -5,20 +5,25 @@ import PIL
 import copy
 import Gui
 import tkinter as tki
+import select
+
 
 HOST = sys.argv[1]
 PORT = int(sys.argv[2])
 MAX_DATA_CHUNK = 1024
+MSG_DELIMETER = b'\n'
     
 class Client():
     """docstring for Client"""
     def __init__(self, username,group):
+        self._online_users = set()
         self.username = username
+        self._online_users.add(username)
         self.group = group
-        print("Before the sockets")
         self.connect_to_server()
         Ultimate_root = tki.Tk()
         self.gui = Gui.GuiRunner(Ultimate_root,self)
+        self.gui.AddToUserBox()
         self.gui.queue_for_running(self.recieve_server_messages)
         Ultimate_root.mainloop()
 
@@ -31,16 +36,68 @@ class Client():
         self.__send_message__('join;%s;%s\n'%(username,group))
     
     def recieve_server_messages(self):
-        print("read messages")
-        res = self.socket.recv(MAX_DATA_CHUNK)
-        if res == None:
-            return
-        print('abcd')
-        messages = res.decode()
-        print(messages)
+        while True:
+            socket = self.socket
+            read_list,w,x = select.select([socket], [], [], 0.01)
+            for sock in read_list:
+                if sock == socket:
+                    data = sock.recv(MAX_DATA_CHUNK)
+                    # do something with the data.
+                    message = data.decode()
+                    self._message_handler = Message(message)
+                    self.event_handler(self._message_handler)
+                    #TODO: USe the message accordingly..
+                    print("serverMessage:%s"%(message))
+            break
         self.gui.queue_for_running(self.recieve_server_messages)
+
+    def event_handler(self, message_class):
+        action = (message_class.actions_types)[0]
+        # join,leave or Users actions.
+        print(message_class.actions_types)
+        if action == "users":
+            users = message_class._raw_list[1].split(",")
+            print(users)
+            for user in users:
+                self._online_users.add(user)
+                self.gui.AddToUserBox()
+        
+        elif action == "join":
+            user = message_class._raw_list[1]
+            print(user)
+            self._online_users.add(user)
+            self.gui.AddToUserBox()
+        elif action == 'leave':
+            user = message_class._raw_list[1]
+            if user in self._online_users:
+                self._online_users.remove(user)
+
+        message_class.actions_types.remove(action)
+        
+class Message():
+    """docstring for Message"""
+    def __init__(self, Server_message):
+        self.__server_message = Server_message
+        self.actions_types = ["cookie"]
+        self.decipher()
+
+    def decipher(self):
+        messages = self.__server_message.split("\n")
+        for message in messages:
+            if len(message) != 0:
+                new_message_parameters = message.split(";")
+                new_message_parameters[-1] = new_message_parameters[-1].strip("\n")
+                self._raw_list = new_message_parameters
+                if self.actions_types[0] == "cookie":
+                    self.actions_types[0] = new_message_parameters[0]
+                else:
+                    self.actions_types.append(new_message_parameters[0])
+
+
+
+
 
 if __name__ == '__main__':
     username = sys.argv[3]
     group = sys.argv[4]
-    Client(username,group)
+    Client(username, group)
