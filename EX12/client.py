@@ -71,6 +71,7 @@ class Client():
             user = message_class._raw_list[1]
             if user in self._online_users:
                 self._online_users.remove(user)
+                self.gui.deleteUserFromUserBox(user)
 
         message_class.actions_types.remove(action)
         

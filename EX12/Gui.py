@@ -21,7 +21,7 @@ class GuiRunner():
         self.canvas.pack(side='right')
         self.canvas.bind("<Button-1>", self.CoordinateClick)
         self.UsersBox = tki.Listbox(parent, width=10, height=10)
-        #self.UsersBox.yview()
+        self.UsersBox.yview()
         self.UsersBox.pack(side='left')
         self.UsersBox.anchor('nw')
         self.ButtonTriangle = tki.Button(parent, command=self.DrawTriangle, text="Triangle")
@@ -100,11 +100,19 @@ class GuiRunner():
 
     def AddToUserBox(self):
         users = list(self.client._online_users)
-        print(users)
         for user in users:
             if user not in self._active_players:
                 self.UsersBox.insert(0, user)
                 self._active_players.append(user)
+    #after leave we create a new user box to avoid the deletion protocol
+    def deleteUserFromUserBox(self, target):
+        size = self.UsersBox.size()
+        for i in range(size):
+            temp_line = self.UsersBox.get(i)
+            print(temp_line,i)
+            if temp_line == target:
+                self.UsersBox.delete(i)
+        
     #TODO: Implement this function..
     def DebugMessage(event):
         pass
