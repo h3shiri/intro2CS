@@ -1,6 +1,8 @@
 import tkinter as tki
 from tkinter import messagebox
 WAIT_TIME = 1000
+BOARD_SIZE = 500
+TEXTBOX_SIZE = 10
 TRIANGLE = 'triangle'
 CIRCLE = 'circle'
 LINE = 'line'
@@ -8,7 +10,7 @@ RECTANGLE = 'rectangle'
 COLOR_LIST = ['blue', 'red', 'violet', 'green', 'yellow', 'black', 'orange']
 
 #TODO: edit help message
-HELP_MESSAGE = 'Help Me!!'
+HELP_MESSAGE = "To use this application:\n 1) please select a shape and color (default is black)\n 2) select appropriate coordinates\n"
 class GuiRunner():
     def __init__(self, parent,client):
         #Building the Gui
@@ -18,11 +20,14 @@ class GuiRunner():
         self._parent = parent
         self.__coordinates_list = []
         self.__color = 'black'
-        self.canvas = tki.Canvas(parent, width=500 ,height=500, highlightbackground='blue')
+        self.canvas = tki.Canvas(parent, width=BOARD_SIZE ,height=BOARD_SIZE, highlightbackground='blue')
         self.canvas.pack(side='right')
         self.canvas.bind("<Button-1>", self.CoordinateClick)
-        self.UsersBox = tki.Listbox(parent, width=10, height=10)
+        self.UsersBox = tki.Listbox(parent, width=TEXTBOX_SIZE, height=TEXTBOX_SIZE)
         self.UsersBox.yview()
+        self.UsersBox.insert(0, "online_users:")
+        group = str(self.client.group)
+        self.UsersBox.insert(0, group)
         self.UsersBox.pack(side='left')
         self.UsersBox.anchor('nw')
         self.ButtonTriangle = tki.Button(parent, command=self.DrawTriangle, text="Triangle")
@@ -99,7 +104,7 @@ class GuiRunner():
                 first_coordinate = coordinates_list[-1]
                 second_coordinate = coordinates_list[-2]
                 third_coordinate = (event.x, event.y)
-                self.canvas.create_polygon(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], third_coordinate[0], third_coordinate[1], fill=color, width=2)
+                self.canvas.create_polygon(first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], third_coordi`nate[0], third_coordinate[1], fill=color, width=2)
                 self.canvas.create_text(third_coordinate[0],third_coordinate[1], text=self.client.username)
                 self.__coordinates_list = []
                 self.Send_triangle_creation('triangle', first_coordinate[0], first_coordinate[1], second_coordinate[0], second_coordinate[1], third_coordinate[0], third_coordinate[1])
@@ -113,7 +118,7 @@ class GuiRunner():
         users = list(self.client._online_users)
         for user in users:
             if user not in self._active_players:
-                self.UsersBox.insert(0, user)
+                self.UsersBox.insert(2, user)
                 self._active_players.append(user)
     #after leave we create a new user box to avoid the deletion protocol
     def deleteUserFromUserBox(self, target):
