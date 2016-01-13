@@ -7,6 +7,7 @@ TEXTBOX_SIZE = 10
 TRIANGLE = 'triangle'
 CIRCLE = 'circle'
 LINE = 'line'
+OVAL = 'oval'
 RECTANGLE = 'rectangle'
 COLOR_LIST = ['blue', 'red', 'violet', 'green', 'yellow', 'black', 'orange']
 
