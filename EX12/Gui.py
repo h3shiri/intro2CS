@@ -58,7 +58,7 @@ class GuiRunner():
     def DrawTriangle(self):
         self.__coordinates_list = []
         self.__coordinates_list.append(TRIANGLE)
-    #TODO: Create text_boxes to these shapes
+
     def CoordinateClick(self, event):
         coordinates_list = self.__coordinates_list
         if self.color_choice.get() == 'Color':
@@ -126,7 +126,6 @@ class GuiRunner():
     def DebugMessage(self):
         messagebox.showinfo('Debug', self._debug_message)
 
-    #TODO: add appropriate text box with username
     def createLine(self, coordinates, color, username):
         c1_x = int(coordinates[0])
         c1_y = int(coordinates[1])

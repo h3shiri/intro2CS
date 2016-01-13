@@ -52,44 +52,46 @@ class Client():
         self.gui.queue_for_running(self.recieve_server_messages)
 
     def event_handler(self, message_class):
-        action = (message_class.actions_types)[0]
-        # join,leave or Users actions.
+        print(message_class._data_list)
         print(message_class.actions_types)
-        if action == "users":
-            users = message_class._raw_list[1].split(",")
-            for user in users:
+        while((len(message_class._data_list) > 0) and (len(message_class.actions_types)>0)):
+            action = (message_class.actions_types.pop(0))
+            data = (message_class._data_list.pop(0))
+            # join,leave or Users actions.
+            if action == "users":
+                users = data[1].split(",")
+                for user in users:
+                    self._online_users.add(user)
+                    self.gui.AddToUserBox()
+            
+            elif action == "join":
+                user = data[1]
                 self._online_users.add(user)
                 self.gui.AddToUserBox()
-        
-        elif action == "join":
-            user = message_class._raw_list[1]
-            self._online_users.add(user)
-            self.gui.AddToUserBox()
-        elif action == 'leave':
-            user = message_class._raw_list[1]
-            if user in self._online_users:
-                self._online_users.remove(user)
-                self.gui.deleteUserFromUserBox(user)
-        elif action == "error":
-            error = message_class._raw_list[1]
-            self.gui._debug_message = error
-        elif action == "shape":
-            self.shape_proccesor(message_class)
-
-        message_class.actions_types.remove(action)
+            elif action == 'leave':
+                user = data[1]
+                if user in self._online_users:
+                    self._online_users.remove(user)
+                    self.gui.deleteUserFromUserBox(user)
+            elif action == "error":
+                error = data[1]
+                self.gui._debug_message = error
+            elif action == "shape":
+                self.shape_proccesor(data)
     
-    def shape_proccesor(self, message_class):
-        username = message_class._raw_list[1]
-        shape = message_class._raw_list[2]
-        color = message_class._raw_list[-1]
-        coordinates = message_class._raw_list[3].split(",")
-        if shape == 'line' and message_class._raw_list[1] != self.username:
+    def shape_proccesor(self, data):
+
+        username = data[1]
+        shape = data[2]
+        color = data[-1]
+        coordinates = data[3].split(",")
+        if shape == 'line' and data[1] != self.username:
             self.gui.createLine(coordinates, color, username)
-        elif shape == 'rectangle' and message_class._raw_list[1] != self.username:
+        elif shape == 'rectangle' and data[1] != self.username:
             self.gui.createRectangle(coordinates, color, username)
-        elif shape == 'oval' and message_class._raw_list[1] != self.username:
+        elif shape == 'oval' and data[1] != self.username:
             self.gui.createCircle(coordinates, color, username)
-        elif shape == 'triangle' and message_class._raw_list[1] != self.username:
+        elif shape == 'triangle' and data[1] != self.username:
             self.gui.createTriangle(coordinates, color, username)
 
 
@@ -98,21 +100,23 @@ class Message():
     def __init__(self, Server_message):
         self.__server_message = Server_message
         self.actions_types = ["cookie"]
+        self._data_list = ["Monster"]
         self.decipher()
 
     def decipher(self):
         messages = self.__server_message.split("\n")
+        num_of_messages = len(messages)
+
         for message in messages:
             if len(message) != 0:
                 new_message_parameters = message.split(";")
                 new_message_parameters[-1] = new_message_parameters[-1].strip("\n")
-                self._raw_list = new_message_parameters
                 if self.actions_types[0] == "cookie":
                     self.actions_types[0] = new_message_parameters[0]
+                    self._data_list[0] = new_message_parameters
                 else:
                     self.actions_types.append(new_message_parameters[0])
-
-
+                    self._data_list.append(new_message_parameters)
 
 
 
