@@ -9,7 +9,16 @@ HOST = sys.argv[1]
 PORT = int(sys.argv[2])
 MAX_DATA_CHUNK = 1024
 MSG_DELIMETER = b'\n'
-    
+TRIANGLE = 'triangle'
+CIRCLE = 'circle'
+LINE = 'line'
+OVAL = 'oval'
+RECTANGLE = 'rectangle'
+SHAPE = 'shape'
+ERROR = 'error'
+LEAVE = 'leave'
+JOIN = 'join'
+USERS = 'users'
 class Client():
     """
     This class represents the client interface to the server,
@@ -66,25 +75,25 @@ class Client():
             action = (message_class.actions_types.pop(0))
             data = (message_class._data_list.pop(0))
             # join,leave or Users actions.
-            if action == "users":
+            if action == USERS:
                 users = data[1].split(",")
                 for user in users:
                     self._online_users.add(user)
                     self.gui.add_to_user_box()
             
-            elif action == "join":
+            elif action == JOIN:
                 user = data[1]
                 self._online_users.add(user)
                 self.gui.add_to_user_box()
-            elif action == 'leave':
+            elif action == LEAVE:
                 user = data[1]
                 if user in self._online_users:
                     self._online_users.remove(user)
                     self.gui.delete_user_from_user_box(user)
-            elif action == "error":
+            elif action == ERROR:
                 error = data[1]
                 self.gui._debug_message = error
-            elif action == "shape":
+            elif action == SHAPE:
                 self.shape_proccesor(data)
     
     def shape_proccesor(self, data):
@@ -95,13 +104,13 @@ class Client():
         shape = data[2]
         color = data[-1]
         coordinates = data[3].split(",")
-        if shape == 'line' and data[1] != self.username:
+        if shape == LINE and data[1] != self.username:
             self.gui.create_line(coordinates, color, username)
-        elif shape == 'rectangle' and data[1] != self.username:
+        elif shape == RECTANGLE and data[1] != self.username:
             self.gui.create_rectangle(coordinates, color, username)
-        elif shape == 'oval' and data[1] != self.username:
+        elif shape == OVAL and data[1] != self.username:
             self.gui.create_circle(coordinates, color, username)
-        elif shape == 'triangle' and data[1] != self.username:
+        elif shape == TRIANGLE and data[1] != self.username:
             self.gui.create_triangle(coordinates, color, username)
 
 
@@ -112,7 +121,7 @@ class Message():
     #Initialise the class and set all basic parameters
     def __init__(self, Server_message):
         self.__server_message = Server_message
-        self.actions_types = ["cookie"]
+        self.actions_types = ["Cookie"]
         self._data_list = ["Monster"]
         self.decipher()
 
@@ -127,7 +136,7 @@ class Message():
                 new_message_parameters = message.split(";")
                 new_message_parameters[-1] = \
                     new_message_parameters[-1].strip("\n")
-                if self.actions_types[0] == "cookie":
+                if self.actions_types[0] == "Cookie":
                     self.actions_types[0] = new_message_parameters[0]
                     self._data_list[0] = new_message_parameters
                 else:
