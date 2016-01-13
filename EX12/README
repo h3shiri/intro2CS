@@ -1,0 +1,34 @@
+adi folkman
+308494715
+adi.folkman
+
+I discussed the exercise with:sapir hamawi,yoav hayoon
+
+=============================
+=  README for ex12  =
+=============================
+
+==================
+=  Description:  =
+==================
+This program allows different users to communicate with each other by
+drawing shapes.Each user can draw a shape in different color.
+If user wants becomes online it will see the shapes drown by other users ,
+before the communication,on his board.
+This program can manage communication between a few users,
+and different groups.
+Using Client Server protocols and Tkinter interface.
+
+=============================
+=  List of submitted files: =
+=============================
+
+README - This file
+Gui.py - contains a GUI we made, users can draw  various shapes on it,
+ in different colors
+client.py - contains a client that communicates with a given server,
+ and update each respective GUI.
+======================
+=  Special Comments  =
+======================
+See additional comments inside the functions
