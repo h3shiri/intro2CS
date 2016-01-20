@@ -19,6 +19,10 @@ ERROR = 'error'
 LEAVE = 'leave'
 JOIN = 'join'
 USERS = 'users'
+VALID_LOWER_CHARS = {chr(i) for i in range(97, 123)}
+VALID_CAPITAL_CHARS = {chr(i) for i in range(65, 91)}
+VALID_NUMBERS = {str(i) for i in range(0,10)}
+VALID_CHARS = ((set('_')).union(VALID_NUMBERS.union(VALID_LOWER_CHARS).union(VALID_CAPITAL_CHARS)))
 class Client():
     """
     This class represents the client interface to the server,
@@ -143,10 +147,20 @@ class Message():
                     self.actions_types.append(new_message_parameters[0])
                     self._data_list.append(new_message_parameters)
 
+#TODO: finish the assiting check function
+# Assisting function, checking that the username is valid..
+def username_check(username):
+    non_valid = False
+    #check whether the username is valid
+    for i in username:
+        if i not in VALID_CHARS:
+            non_valid = True
+
 
 
 if __name__ == '__main__':
     username = sys.argv[3]
+    username = username_check(username)
     group = sys.argv[4]
     Client(username, group)
 
